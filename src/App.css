@@ -47,3 +47,19 @@ main:only-child > .buttons > button {
   color: #f0e391;
   cursor: pointer;
 }
+
+.editable-text {
+  display: flex;
+  align-items: center;
+}
+
+.editable-text > input, .editable-text > textarea {
+  font-size: 1rem;
+  font-family: 'IM Fell DW Pica', serif;
+  border: none;
+  background: none;
+  color: #000000;
+  outline: none;
+  border-bottom: #000000 3px solid;
+}
+

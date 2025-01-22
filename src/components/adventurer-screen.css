@@ -15,6 +15,13 @@
     text-transform: uppercase;
 }
 
+.adventurer-screen > .name input {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    font-family: 'IM Fell DW Pica', serif;
+    background: none;
+}
+
 .adventurer-screen .image {
     aspect-ratio: 1;
     width: 20rem;
@@ -45,6 +52,14 @@
     text-align: center;
 }
 
+.adventurer-screen .bio.editing {
+    width: 80%;
+}
+
+.adventurer-screen .bio.editing textarea {
+    width: 100%;
+}
+
 .adventurer-screen .stats {
     display: flex;
     justify-content: space-evenly;
@@ -64,17 +79,23 @@
 .adventurer-screen .history {
     flex: 1;
     max-height: 40%;
-    width: calc(100% - 2rem);
+    width: 100%;
     overflow-y: auto;
 }
 
 .adventurer-screen .history > .event {
-    width: 100%;
-    height: 3rem;
-    margin: 0.5rem 0;
+    width: calc(100% - 2rem);
+    height: 4rem;
+    margin: 0.5rem 1rem;
+    padding: 0.5rem;
     display: grid;
     grid-template: 1fr / 1fr 1fr;
     box-sizing: border-box;
+
+    box-sizing: border-box;
+    border: 4px solid #000000;
+    border-radius: 1rem;
+    box-shadow: 1px 1px 3px 2px rgba(0, 0, 0, 0.5);
 }
 
 .adventurer-screen .history > .event .location {

@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { useLilo } from '../logic/lilo'
 
+import EditableText from './editable-text'
 import Stat from './stat'
 import Avatar from './avatar'
 
@@ -22,9 +23,9 @@ export default function AdventurerScreen ({ editable=false, children }) {
   }
 
   return <div className='adventurer-screen'>
-    <div className='name'>{data.name}</div>
+    <EditableText className='name' editable={editable} save={save} value={data.name} />
     <Avatar editable={editable} save={save} value={data.image} />
-    <div className='bio'>{data.bio}</div>
+    <EditableText className='bio' editable={editable} save={save} value={data.bio} multiline />
     <div className='stats'>
       {data.stats.map(stat => <Stat key={stat.name} {...stat} editable save={save} />)}
     </div>
