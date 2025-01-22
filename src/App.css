@@ -1,11 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica:ital@0;1&family=Quintessential&display=swap');
+
 html, body, #root {
   width: 100%;
   height: 100%;
   margin: 0;
+  font-family: 'IM Fell DW Pica', serif;
 }
 
 #root {
-  background: #f0e391;
+  position: absolute;
+  top: 0%; left: 50%; transform: translate(-50%, 0);
+  box-shadow: 2px 3px 20px black, 0 0 60px #8a4d0f inset;
+  background: #fffef0;
+  filter: url(#wavy2);
 }
 
 main:only-child {

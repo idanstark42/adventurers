@@ -1,0 +1,56 @@
+.stat {
+    position: relative;
+    border-radius: 50%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 5rem;
+}
+
+.stat > .icon {
+    position: relative;
+    height: 4rem;
+    width: 4rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 50%;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    box-sizing: border-box;
+    border: 4px solid #472354;
+    box-shadow: 1px 1px 3px 2px rgba(0, 0, 0, 0.5);
+}
+
+.stat .meter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 0;
+}
+
+.stat .value {
+    color: white;
+}
+
+.stat .name, .stat .value {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.stat.editing .icon {
+    border: 4px solid #235430;
+    box-shadow: none;
+}
