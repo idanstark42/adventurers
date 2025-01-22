@@ -1,10 +1,12 @@
 
 import React, { useState } from 'react'
 import { useLilo } from '../logic/lilo'
+import { GiBookmarklet, GiOpenTreasureChest } from "react-icons/gi";
 
 import EditableText from './editable-text'
 import Stat from './stat'
 import Avatar from './avatar'
+import Event from './event'
 
 import './adventurer-screen.css'
 
@@ -30,15 +32,11 @@ export default function AdventurerScreen ({ editable=false, children }) {
       {data.stats.map(stat => <Stat key={stat.name} {...stat} editable save={save} />)}
     </div>
     <div className='tabs'>
-      <div className={`tab ${tab === 'history' ? 'active' : ''}`} onClick={() => setTab('history')}>History</div>
-      <div className={`tab ${tab === 'inventory' ? 'active' : ''}`} onClick={() => setTab('inventory')}>Inventory</div>
+      <div className={`tab ${tab === 'history' ? 'active' : ''}`} onClick={() => setTab('history')}><GiBookmarklet /> History</div>
+      <div className={`tab ${tab === 'inventory' ? 'active' : ''}`} onClick={() => setTab('inventory')}><GiOpenTreasureChest /> Inventory</div>
     </div>
     <div className={`tab-content history ${data.history.length === 0 ? 'empty' : ''} ${tab === 'history' ? 'active' : ''}`}>
-      {data.history.map(event => <div key={event.date} className='event'>
-        <div className='date'>{event.date}</div>
-        <div className='location'>{event.location}</div>
-        <div className='event'>{event.event}</div>
-      </div>)}
+      {data.history.map((event, index) => <Event key={index} event={event} editable save={save} />)}
     </div>
     <div className={`tab-content inventory ${tab === 'inventory' ? 'active' : ''}`}>
       {data.inventory.map(item => <div key={item.name} className='item'>
