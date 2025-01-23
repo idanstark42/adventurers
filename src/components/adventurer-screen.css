@@ -22,7 +22,7 @@
     background: none;
 }
 
-.adventurer-screen .image {
+.adventurer-screen > .image {
     aspect-ratio: 1;
     width: 20rem;
     max-width: 40%;
@@ -38,7 +38,7 @@
     box-shadow: 1px 1px 3px 2px rgba(0, 0, 0, 0.5);
 }
 
-.editable .image {
+.editable > .image {
     border: 4px solid #472354;
 }
 
@@ -128,6 +128,10 @@
 
 .adventurer-screen .history > .event .date {
     grid-column: 1 / 3;
+    color: rgb(90, 90, 90);
+    font-size: 0.8rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
 }
 
 .adventurer-screen .history > .event .location {
@@ -156,7 +160,6 @@
     height: 100%;
     width: 100%;
     letter-spacing: 1px;
-    font-size: 1.1rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -169,7 +172,7 @@
     grid-column: 1 / 3;
 }
 
-.adventurer-screen .history > .event.adding {
+.adventurer-screen .history > .event.adding, .adventurer-screen .inventory > .item.adding {
     display: flex !important;
     align-items: center;
     justify-content: center;
@@ -182,22 +185,29 @@
     font-weight: bold;
 }
 
-.adventurer-screen .history > .event .modal .content {
+.adventurer-screen .inventory > .item.adding > span {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.adventurer-screen .modal .content {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.adventurer-screen .history > .event .modal .content .field {
+.adventurer-screen .modal .content .field {
     display: flex;
     gap: 0.5rem;
 }
 
-.adventurer-screen .history > .event .modal .content .field > * {
+.adventurer-screen .modal .content .field > * {
     flex: 1;
 }
 
-.adventurer-screen .history > .event .modal .content .field input {
+.adventurer-screen .modal .content .field input {
     font-size: 1rem;
     font-family: 'IM Fell DW Pica', serif;
     background: none;
@@ -207,14 +217,14 @@
     width: 50%;
 }
 
-.adventurer-screen .history > .event .modal .content .actions {
+.adventurer-screen .modal .content .actions {
     display: flex;
     justify-content: center;
     align-items: center;
     padding-top: 0.5rem;
 }
 
-.adventurer-screen .history > .event .modal .content .actions button {
+.adventurer-screen .modal .content .actions button {
     padding: 0.5rem;
     font-family: 'IM Fell DW Pica', serif;
     text-transform: uppercase;
@@ -245,4 +255,69 @@
     align-items: center;
     border-radius: 0.5rem;
     box-shadow: 1px 1px 3px 2px rgba(0, 0, 0, 0.5);
+}
+
+.adventurer-screen .inventory {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    width: fit-content;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.adventurer-screen .inventory > .item {
+    width: calc(25% - 0.5rem);
+    aspect-ratio: 1;
+    box-sizing: border-box;
+    border: 4px solid #09122C;
+    border-radius: 1rem;
+    box-shadow: 1px 1px 3px 2px rgba(0, 0, 0, 0.5);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    background: #09122C;
+}
+
+.adventurer-screen .inventory > .item.adding > span {
+    color: white;
+}
+
+.adventurer-screen .inventory > .item > .image {
+    width: 100%;
+    background-color: black;
+    background-position: center;
+    background-size: cover;
+    flex: 1;
+}
+
+.adventurer-screen .inventory > .item .modal .name {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    font-family: 'IM Fell DW Pica', serif;
+    text-align: center;
+}
+
+.adventurer-screen .inventory > .item .modal .description {
+    text-align: center;
+}
+
+.adventurer-screen .inventory > .item > .name {
+    text-align: center;
+    color: white;
+}
+
+.adventurer-screen .inventory > .item .image-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.adventurer-screen .inventory > .item .image-preview img {
+    width: 10rem;
+    height: 10rem;
+    border: 4px solid black;
+    border-radius: 1rem;
 }

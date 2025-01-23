@@ -52,6 +52,17 @@ main:only-child > .buttons > button {
   align-items: center;
 }
 
+input[type="file"]::file-selector-button {
+  display: none;
+}
+
+textarea {
+  background: none;
+  border: none;
+  outline: none;
+  border-bottom: #000000 1px solid;
+}
+
 .editable-text > input, .editable-text > textarea {
   font-size: 1rem;
   font-family: 'IM Fell DW Pica', serif;

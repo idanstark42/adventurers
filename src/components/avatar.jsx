@@ -17,7 +17,6 @@ export default function Avatar ({ editable, save, value }) {
     if (!file) return
 
     const response = await uploadImage(file)
-    console.log(response)
     save(original => {
       original.image = response.result.url
       return original

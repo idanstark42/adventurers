@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import * as FLAGS from 'country-flag-icons/react/3x2'
 import { FaSave } from 'react-icons/fa'
+
+import { getCountry } from '../logic/countries'
 
 const DEFAULT_FORM_VALUES = {
   // current country
@@ -14,7 +16,6 @@ export default function Event ({ event, editable, save }) {
   const [editingModalOpen, setEditingModalOpen] = useState(false)
   const adding = !event
   const [formValues, setFormValues] = useState(adding ? DEFAULT_FORM_VALUES : { location: event.location, event: event.event, date: event.date })
-  console.log(formValues.country)
 
   const startEditing = () => {
     if (!editable) return
@@ -22,14 +23,17 @@ export default function Event ({ event, editable, save }) {
   }
 
   const saveEdit = async () => {
+    const country = await getCountry(formValues.location)
     await save(data => {
+      formValues.country = country
       if (adding) {
-        data.history.push(formValues)
+        data.history.unshift(formValues)
       } else {
         Object.assign(event, formValues)
       }
       return data
     })
+    if (adding) setFormValues(DEFAULT_FORM_VALUES)
     setEditingModalOpen(false)
   }
 
@@ -47,17 +51,17 @@ export default function Event ({ event, editable, save }) {
         <div className='location-name'>{event.location}</div>
       </div>
       <div className='event'>{event.event}</div>
-      <div className='date'>{event.date}</div>
+      <div className='date'>{new Date(event.date).toLocaleDateString()}</div>
     </>}
     {editingModalOpen && <div className='modal open' onClick={closeEditing}>
       <div className='content' onClick={e => e.stopPropagation()}>
         <div className='field'>
-          <label>Location</label>
-          <input type='text' value={formValues.location} onChange={e => setFormValues({ ...formValues, location: e.target.value })} />
-        </div>
-        <div className='field'>
           <label>Event</label>
           <input type='text' value={formValues.event} onChange={e => setFormValues({ ...formValues, event: e.target.value })} />
+        </div>
+        <div className='field'>
+          <label>Location</label>
+          <input type='text' value={formValues.location} onChange={e => setFormValues({ ...formValues, location: e.target.value })} />
         </div>
         <div className='field'>
           <label>Date</label>
