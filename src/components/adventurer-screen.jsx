@@ -37,6 +37,7 @@ export default function AdventurerScreen ({ editable=false, children }) {
     </div>
     <div className={`tab-content history ${data.history.length === 0 ? 'empty' : ''} ${tab === 'history' ? 'active' : ''}`}>
       {data.history.map((event, index) => <Event key={index} event={event} editable save={save} />)}
+      {editable && <Event event={null} editable save={save} />}
     </div>
     <div className={`tab-content inventory ${tab === 'inventory' ? 'active' : ''}`}>
       {data.inventory.map(item => <div key={item.name} className='item'>

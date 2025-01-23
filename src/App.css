@@ -12,7 +12,6 @@ html, body, #root {
   top: 0%; left: 50%; transform: translate(-50%, 0);
   box-shadow: 2px 3px 20px black, 0 0 60px #8a4d0f inset;
   background: #fffef0;
-  filter: url(#wavy2);
 }
 
 main:only-child {
@@ -63,3 +62,38 @@ main:only-child > .buttons > button {
   border-bottom: #000000 3px solid;
 }
 
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 100;
+}
+
+.modal .content {
+  position: relative;
+  padding: 1rem;
+  min-width: 20rem;
+  min-height: 10rem;
+  max-width: calc(100% - 2rem);
+  max-height: calc(100% - 2rem);
+  box-sizing: border-box;
+}
+
+.modal .content::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 101;
+
+  box-shadow: 2px 3px 20px black, 0 0 60px #8a4d0f inset;
+  background: #fffef0;
+  filter: url(#wavy2);
+}
+
+.modal .content * {
+  position: relative;
+  z-index: 102;
+}
