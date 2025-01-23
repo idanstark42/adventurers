@@ -77,7 +77,6 @@
 
 .adventurer-screen .tabs > .tab {
     padding: 0.5rem;
-    border: 1px solid black;
     border-radius: 0.5rem;
     cursor: pointer;
     flex: 1;
@@ -91,7 +90,7 @@
 }
 
 .adventurer-screen .tabs > .tab.active {
-    background: #000000;
+    background: #09122C;
     color: #ffffff;
 }
 
@@ -119,7 +118,7 @@
     box-sizing: border-box;
 
     box-sizing: border-box;
-    border: 4px solid #000000;
+    border: 4px solid #09122C;
     border-radius: 1rem;
     box-shadow: 1px 1px 3px 2px rgba(0, 0, 0, 0.5);
 }
@@ -165,4 +164,21 @@
 
 .adventurer-screen .history > .event .event {
     grid-column: 1 / 3;
+}
+
+
+.adventurer-screen .edit {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: #09122C;
+    color: white;
+    width: 3rem;
+    height: 3rem;
+    display: flex
+;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    box-shadow: 1px 1px 3px 2px rgba(0, 0, 0, 0.5);
 }

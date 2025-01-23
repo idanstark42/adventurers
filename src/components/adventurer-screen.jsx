@@ -24,7 +24,7 @@ export default function AdventurerScreen ({ editable=false, children }) {
     return <div>Loading...</div>
   }
 
-  return <div className='adventurer-screen'>
+  return <div className={`adventurer-screen ${editable ? 'editable' : ''}`}>
     <EditableText className='name' editable={editable} save={save} value={data.name} />
     <Avatar editable={editable} save={save} value={data.image} />
     <EditableText className='bio' editable={editable} save={save} value={data.bio} multiline />
