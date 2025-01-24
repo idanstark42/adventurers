@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FaCheck } from 'react-icons/fa'
 
-export default function EditableText ({ className, value, editable, save, multiline }) {
+export default function EditableText ({ name, className, value, editable, save, multiline }) {
   const [editValue, setEditValue] = useState(value)
   const [editing, setEditing] = useState(false)
 
@@ -9,7 +9,7 @@ export default function EditableText ({ className, value, editable, save, multil
     if (!editable) return
     setEditing(previousValue => {
       if (previousValue) {
-        save(original => ({ ...original, name: editValue }))
+        save(original => ({ ...original, [name]: editValue }))
       }
       return !previousValue
     })

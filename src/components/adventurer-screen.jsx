@@ -26,11 +26,11 @@ export default function AdventurerScreen ({ editable=false, children }) {
   }
 
   return <div className={`adventurer-screen ${editable ? 'editable' : ''}`}>
-    <EditableText className='name' editable={editable} save={save} value={data.name} />
+    <EditableText className='name' name='name' editable={editable} save={save} value={data.name} />
     <Avatar editable={editable} save={save} value={data.image} />
-    <EditableText className='bio' editable={editable} save={save} value={data.bio} multiline />
+    <EditableText className='bio' name='bio' editable={editable} save={save} value={data.bio} multiline />
     <div className='stats'>
-      {data.stats.map(stat => <Stat key={stat.name} {...stat} editable={editable} save={save} />)}
+      {Object.entries(data.stats).map(([name, history]) => <Stat key={name} name={name} history={history} editable={editable} save={save} />)}
     </div>
     <div className='tabs'>
       <div className={`tab ${tab === 'history' ? 'active' : ''}`} onClick={() => setTab('history')}><GiBookmarklet /> History</div>

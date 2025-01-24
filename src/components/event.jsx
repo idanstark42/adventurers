@@ -14,11 +14,15 @@ const DEFAULT_FORM_VALUES = {
 
 export default function Event ({ event, editable, save }) {
   const [editingModalOpen, setEditingModalOpen] = useState(false)
+  const [viewingModalOpen, setViewingModalOpen] = useState(false)
   const adding = !event
   const [formValues, setFormValues] = useState(adding ? DEFAULT_FORM_VALUES : { location: event.location, event: event.event, date: event.date })
 
   const startEditing = () => {
-    if (!editable) return
+    if (!editable) {
+      setViewingModalOpen(true)
+      return
+    }
     setEditingModalOpen(true)
   }
 
@@ -42,6 +46,11 @@ export default function Event ({ event, editable, save }) {
     event.stopPropagation()
   }
 
+  const closeViewing = event => {
+    setViewingModalOpen(false)
+    event.stopPropagation()
+  }
+
   const Flag = event?.country ? FLAGS[event.country] : React.Fragment
 
   return <div className={`event ${adding ? 'adding' : ''}`} onClick={startEditing}>
@@ -53,6 +62,22 @@ export default function Event ({ event, editable, save }) {
       <div className='event'>{event.event}</div>
       <div className='date'>{new Date(event.date).toLocaleDateString()}</div>
     </>}
+    {viewingModalOpen && <div className='modal open' onClick={closeViewing}>
+      <div className='content' onClick={e => e.stopPropagation()}>
+        <div className='field'>
+          <label>Event</label>
+          <span>{event.event}</span>
+        </div>
+        <div className='field'>
+          <label>Location</label>
+          <span>{event.location}</span>
+        </div>
+        <div className='field'>
+          <label>Date</label>
+          <span>{new Date(event.date).toLocaleDateString()}</span>
+        </div>
+      </div>
+    </div>}
     {editingModalOpen && <div className='modal open' onClick={closeEditing}>
       <div className='content' onClick={e => e.stopPropagation()}>
         <div className='field'>
