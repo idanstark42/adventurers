@@ -1,0 +1,31 @@
+.skills .icon {
+  position: relative;
+  height: 3rem;
+  width: 3rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+
+  box-sizing: border-box;
+  border: 4px solid #09122C;
+}
+
+.skills > .name {
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.skills > .meter {
+  width: 100%;
+  height: 1rem;
+  border-radius: 0.5rem;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.skills > .meter > .progress {
+  height: 1rem;
+  border-radius: 0.5rem;
+  background: #235430;
+}
