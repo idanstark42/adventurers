@@ -11,6 +11,16 @@
   border: 4px solid #09122C;
 }
 
+.editable .skills > .icon {
+    box-shadow: 1px 1px 3px 2px rgba(0, 0, 0, 0.5);
+    border: 4px solid #472354;
+}
+
+.editable .skills > .icon.editing {
+  border: 4px solid #235430;
+  box-shadow: none;
+}
+
 .skills > .name {
   text-transform: uppercase;
   font-size: 0.7rem;

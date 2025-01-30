@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { FaSave } from 'react-icons/fa'
 
 import './skill.css'
 
@@ -26,50 +27,63 @@ const SKILL_LEVELS = {
 const findLevel = (xp, levels) => Math.max(0, levels.findLastIndex(level => xp >= level))
 
 export default function Skill ({ name, history, editable, save }) {
-  const [editValue, setEditValue] = useState(history.reduce((total, { value }) => total + value, 0))
-  const [editing, setEditing] = useState(false)
-  const [dragStart, setDragStart] = useState(null)
+  const [editingModalOpen, setEditingModalOpen] = useState(false)
 
-  const toggleEdit = () => {
-    if (!editable) return
-    setEditing(previousValue => {
-      if (previousValue) {
-        save(original => {
-          original.skills[name] = (original.skills[name] || []).concat({ value: editValue, timestamp: Date.now() })
-          return original
-        })
-      }
-      return !previousValue
-    })
-  }
-
-  const startDragging = event => {
-    if (!editing) return
-    setDragStart(event.touches[0].clientX)
-  }
-
-  const endDragging = event => {
-    if (!editing) return
-    setDragStart(null)
-  }
-
-  const handleDrag = event => {
-    if (!editing) return
-    const amount = -1 * (event.touches[0].clientX - dragStart)
-    setEditValue(Math.round(Math.min(100, Math.max(0, value + amount))))
-  }
-
-  const level = findLevel(editValue, SKILL_LEVELS[name])
-  const pointsInLevel = editValue - SKILL_LEVELS[name][level]
+  const value = history.length > 0 ? history[history.length - 1].value : 0
+  const level = findLevel(value, SKILL_LEVELS[name])
+  const pointsInLevel = value - SKILL_LEVELS[name][level]
   const totalPoints = SKILL_LEVELS[name][level + 1] - SKILL_LEVELS[name][level]
+  const [formValues, setFormValues] = useState({ level, pointsInLevel, comment: '' })
+
+  const startEditing = () => {
+    if (!editable) {
+      return
+    }
+    setEditingModalOpen(true)
+  }
+
+  const saveEdit = async () => {
+    await save(data => {
+      formValues.timestamp = Date.now()
+      formValues.value = SKILL_LEVELS[name].reduce((total, level, index) => total + (index <= formValues.level ? level : 0), formValues.pointsInLevel)
+      console.log(formValues)
+      history.push(formValues)
+      return data
+    })
+    setEditingModalOpen(false)
+  }
+
+  const closeEditing = event => {
+    setEditingModalOpen(false)
+    event.stopPropagation()
+  }
 
   return <>
-    <div className='icon' style={{ backgroundImage: `url(${SKILL_ICONS[name]})` }} />
+    <div className='icon' style={{ backgroundImage: `url(${SKILL_ICONS[name]})` }} onClick={startEditing} />
     <div className='name'>{name}</div>
-    <div className='meter' onClick={toggleEdit} onTouchMove={handleDrag} onTouchStart={startDragging} onTouchEnd={endDragging}>
+    <div className='meter'>
       <div className='progress' style={{ width: `${5 + pointsInLevel / totalPoints * 95}%`, backgroundColor: COLORS[name] }} />
     </div>
     <div className='points'>{pointsInLevel}/{totalPoints}</div>
-    <div className='level'>lvl. {level}</div>
+    <div className='level'>lvl. {level + 1}</div>
+    {editingModalOpen && <div className='modal open' onClick={closeEditing}>
+      <div className='content' onClick={e => e.stopPropagation()}>
+        <div className='field'>
+          <label>Level</label>
+          <input type='number' value={formValues.level + 1} onChange={e => setFormValues({ ...formValues, level: Number(e.target.value) - 1 })} min={1} max={SKILL_LEVELS[name].length} />
+        </div>
+        <div className='field'>
+          <label>XP</label>
+          <input type='number' value={formValues.pointsInLevel} onChange={e => setFormValues({ ...formValues, pointsInLevel: Number(e.target.value) })} min={0} max={totalPoints} />
+        </div>
+        <div className='field'>
+          <label>Comment</label>
+          <textarea value={formValues.comment} onChange={e => setFormValues({ ...formValues, comment: e.target.value })} />
+        </div>
+        <div className='actions'>
+          <button onClick={() => saveEdit()}><FaSave />save</button>
+        </div>
+      </div>
+    </div>}
   </>
 }
