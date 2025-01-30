@@ -13,17 +13,13 @@ export default function ({ item, editable, save }) {
   const [formValues, setFormValues] = useState(adding ? DEFAULT_FORM_VALUES : { objective: item.objective, dateDone: item.dateDone })
 
   const handleClick = () => {
-    if (!editable) {
-      setViewingModalOpen(true)
-      return
-    }
     setEditingModalOpen(true)
   }
 
   const saveEdit = async () => {
     await save(data => {
       if (adding) {
-        data.inventory.push(formValues)
+        data.bucketlist.push(formValues)
       } else {
         Object.assign(item, formValues)
       }
@@ -53,6 +49,7 @@ export default function ({ item, editable, save }) {
         </div>
         <div className='actions'>
           <button onClick={() => saveEdit()}><FaSave />save</button>
+          <button onClick={() => markAsDone()}><FaCheckSquare />mark as done</button>
         </div>
       </div>
     </div>}
