@@ -14,37 +14,12 @@ html, body, #root {
   background: #fffef0;
 }
 
-main:only-child {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  height: 100%;
-}
-
-main:only-child > img {
+.title {
+  font-size: 2rem;
+  text-transform: uppercase;
+  font-family: 'IM Fell DW Pica', serif;
+  text-align: center;
   width: 100%;
-  max-width: calc(100% - 10rem);
-  margin-bottom: 20px;
-}
-
-main:only-child > .buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: calc(100% - 4rem);
-}
-
-main:only-child > .buttons > button {
-  width: 100%;
-  margin: 10px 0;
-  padding: 10px 20px;
-  font-size: 1.2em;
-  border: none;
-  border-radius: 5px;
-  background: #333;
-  color: #f0e391;
-  cursor: pointer;
 }
 
 .editable-text {

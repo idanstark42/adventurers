@@ -1,19 +1,24 @@
 
 import React, { useState } from 'react'
 import { useLilo } from '../logic/lilo'
-import { GiBookmarklet, GiOpenTreasureChest } from "react-icons/gi";
+import { GiBookmarklet, GiFullWoodBucket, GiOpenTreasureChest, GiNotebook } from "react-icons/gi";
+
+import NoOne from './no-one'
+import Signup from './signup'
 
 import EditableText from './editable-text'
 import Stat from './stat'
+import Skill from './skill'
 import Avatar from './avatar'
 import Event from './event'
 import Item from './item'
+import BucketlistItem from './bucketlist-item'
 
 import './adventurer-screen.css'
 
 export default function AdventurerScreen ({ editable=false, children }) {
-  const { data, update } = useLilo()
-  const [tab, setTab] = useState('history')
+  const { data, update, loading, userId } = useLilo()
+  const [tab, setTab] = useState('bio')
 
   const save = async (callback) => {
     const newData = callback(data)
@@ -21,28 +26,51 @@ export default function AdventurerScreen ({ editable=false, children }) {
     await update({}, newData)
   }
 
-  if (!data) {
+  if (!data && loading) {
     return <div>Loading...</div>
   }
 
+  if (!data) {
+    const userIdFromURL = window.location.pathname.split('/').pop()
+    if (userId && userId === userIdFromURL) {
+      return <Signup />
+    } else {
+      return <NoOne />
+    }
+  }
+
   return <div className={`adventurer-screen ${editable ? 'editable' : ''}`}>
-    <EditableText className='name' name='name' editable={editable} save={save} value={data.name} />
-    <Avatar editable={editable} save={save} value={data.image} />
-    <EditableText className='bio' name='bio' editable={editable} save={save} value={data.bio} multiline />
-    <div className='stats'>
-      {Object.entries(data.stats).map(([name, history]) => <Stat key={name} name={name} history={history} editable={editable} save={save} />)}
+    <div className={`tab-content bio ${tab === 'bio' ? 'active' : ''}`}>
+      <EditableText className='name' name='name' editable={editable} save={save} value={data.name} />
+      <Avatar editable={editable} save={save} value={data.image} />
+      <EditableText className='bio' name='bio' editable={editable} save={save} value={data.bio} multiline />
+      <div className='stats'>
+        {Object.entries(data.stats).sort(([name1], [name2]) => name1.localeCompare(name2)).map(([name, history]) => <Stat key={name} name={name} history={history} editable={editable} save={save} />)}
+      </div>
+      <div className='skills'>
+        {Object.entries(data.skills).map(([name, history]) => <Skill key={name} name={name} history={history} editable={editable} save={save} />)}
+      </div>
     </div>
-    <div className='tabs'>
-      <div className={`tab ${tab === 'history' ? 'active' : ''}`} onClick={() => setTab('history')}><GiBookmarklet /> History</div>
-      <div className={`tab ${tab === 'inventory' ? 'active' : ''}`} onClick={() => setTab('inventory')}><GiOpenTreasureChest /> Inventory</div>
+    <div className={`tab-content bucketlist ${tab === 'bucketlist' ? 'active' : ''}`}>
+      <div className='title'>Bucket List</div>
+      {data.bucketlist.map((item, index) => <BucketlistItem key={index} item={item} editable={editable} save={save} />)}
+      {editable && <BucketlistItem event={null} editable={editable} save={save} />}
     </div>
     <div className={`tab-content history ${data.history.length === 0 ? 'empty' : ''} ${tab === 'history' ? 'active' : ''}`}>
-    {editable && <Event event={null} editable={editable} save={save} />}
-    {data.history.map((event, index) => <Event key={index} event={event} editable={editable} save={save} />)}
+      <div className='title'>History</div>
+      {editable && <Event event={null} editable={editable} save={save} />}
+      {data.history.map((event, index) => <Event key={index} event={event} editable={editable} save={save} />)}
     </div>
     <div className={`tab-content inventory ${tab === 'inventory' ? 'active' : ''}`}>
+      <div className='title'>Inventory</div>
       {data.inventory.map((item, index) => <Item key={index} item={item} editable={editable} save={save} />)}
       {editable && <Item event={null} editable={editable} save={save} />}
+    </div>
+    <div className='tabs'>
+      <div className={`tab ${tab === 'bio' ? 'active' : ''}`} onClick={() => setTab('bio')}><GiNotebook /></div>
+      <div className={`tab ${tab === 'bucketlist' ? 'active' : ''}`} onClick={() => setTab('bucketlist')}><GiFullWoodBucket /></div>
+      <div className={`tab ${tab === 'history' ? 'active' : ''}`} onClick={() => setTab('history')}><GiBookmarklet /></div>
+      <div className={`tab ${tab === 'inventory' ? 'active' : ''}`} onClick={() => setTab('inventory')}><GiOpenTreasureChest /></div>
     </div>
     {children}
   </div>

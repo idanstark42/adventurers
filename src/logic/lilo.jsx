@@ -7,7 +7,8 @@ const DEFAULT_SETTINGS = {
   reload: false,
   createIfEmpty: false,
   type: 'single',
-  filterType: 'path' // 'path', 'query', 'element', 'auth' or 'none'
+  filterType: 'path', // 'path', 'query', 'element', 'auth' or 'none'ת
+  unAuthRedirect: '/'
 }
 
 export function LiloProvider({ children, ...settings }) {
@@ -60,8 +61,8 @@ export function LiloProvider({ children, ...settings }) {
     isOwner: (Boolean(data?.owner_id) && Boolean(userId) && data?.owner_id === userId),
     read: (...args) => whileLoading(() => lilo.read(...args)),
     update: (...args) => whileLoading(() => lilo.update(...args).then(() => load(lilo))),
-    delete: (...args) => whileLoading(() => lilo.delete(...args)),
-    create: (...args) => whileLoading(() => lilo.create(...args)),
+    delete: (...args) => whileLoading(() => lilo.delete(...args).then(() => load(lilo))),
+    create: (...args) => whileLoading(() => lilo.create(...args).then(() => load(lilo))),
     uploadImage
   }
 
@@ -80,13 +81,20 @@ class DatabaseClient {
   }
 
   async request(action, data={}, filter={}, options={}) {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/database`, {
-      method: 'POST',
-      headers: this.headers,
-      body: JSON.stringify({ action, collection: this.settings.collection, data, filter, options })
-    })
-    const json = await response.json()
-    return json.result
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/database`, {
+        method: 'POST',
+        headers: this.headers,
+        body: JSON.stringify({ action, collection: this.settings.collection, data, filter, options })
+      })
+      const json = await response.json()
+      return json.result
+    } catch (error) {
+      if (error.status === 401) {
+        window.location.href = `${window.location.origin}${this.settings.unAuthRedirect}`
+      }
+      console.error(error)
+    }
   }
 
   get token() {

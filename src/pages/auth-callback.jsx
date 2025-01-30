@@ -7,7 +7,7 @@ export default function Authenticate () {
 
   useEffect(() => {
     if (session) {
-      window.location.href = `${window.location.origin}/show/${session.user_id}`
+      window.location.href = `${window.location.origin}/edit/${session.user_id}`
     } else {
       const token = new URLSearchParams(window.location.search).get('token')
       if (token) {

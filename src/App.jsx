@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 
 import './App.css'
 
@@ -9,8 +10,10 @@ import AuthCallback from './pages/auth-callback'
 
 import { LiloProvider } from './logic/lilo'
 
+const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID
+
 function App() {
-  return (
+  return <PayPalScriptProvider options={{ 'client-id': PAYPAL_CLIENT_ID }}>
     <Router>
       <Routes>
         <Route path="/edit/:id" element={<LiloProvider collection='adventurers'><Edit /></LiloProvider>} />
@@ -19,7 +22,7 @@ function App() {
         <Route path="/*" element={<Home />} />
       </Routes>
     </Router>
-  )
+  </PayPalScriptProvider>
 }
 
 export default App
