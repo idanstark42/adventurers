@@ -14,6 +14,8 @@ import Event from './event'
 import Item from './item'
 import BucketlistItem from './bucketlist-item'
 import LogoutButton from './logout-button'
+import ShareButton from './share'
+import SocialMediaLink from './social-media-link'
 
 import './adventurer-screen.css'
 import Loader from './loader';
@@ -45,6 +47,10 @@ export default function AdventurerScreen ({ editable=false, children }) {
     <div className={`tab-content bio ${tab === 'bio' ? 'active' : ''}`}>
       <EditableText className='name' name='name' editable={editable} save={save} value={data.name} />
       <Avatar editable={editable} save={save} value={data.image} />
+      <ShareButton title={data.name} text={data.bio} url={window.location.href} />
+      <div className='links'>
+        {data.socialLinks.map(link => <SocialMediaLink key={link} link={link} editable={editable} save={save} />)}
+      </div>
       <EditableText className='bio' name='bio' editable={editable} save={save} value={data.bio} multiline />
       <div className='stats'>
         {Object.entries(data.stats).sort(([name1], [name2]) => name1.localeCompare(name2)).map(([name, history]) => <Stat key={name} name={name} history={history} editable={editable} save={save} />)}

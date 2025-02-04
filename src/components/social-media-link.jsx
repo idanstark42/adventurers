@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
-import { FaSave, FaCheckSquare, FaRegSquare, FaPlus } from 'react-icons/fa'
+import { SocialIcon } from 'react-social-icons'
+import { FaSave, FaPlus } from 'react-icons/fa'
 
 const DEFAULT_FORM_VALUES = {
   objective: '',
   dateDone: null
 }
 
-export default function ({ item, editable, save }) {
+export default function ({ link, editable, save }) {
   const [editingModalOpen, setEditingModalOpen] = useState(false)
-  const adding = !item
-  const done = !adding && item.dateDone
-  const [formValues, setFormValues] = useState(adding ? DEFAULT_FORM_VALUES : { objective: item.objective, dateDone: item.dateDone })
+  const adding = !link
+  const done = !adding && link.dateDone
+  const [formValues, setFormValues] = useState(adding ? DEFAULT_FORM_VALUES : { objective: link.objective, dateDone: link.dateDone })
 
   const handleClick = () => {
     if (!editable) return
@@ -22,7 +23,7 @@ export default function ({ item, editable, save }) {
       if (adding) {
         data.bucketlist.push(formValues)
       } else {
-        Object.assign(item, formValues)
+        Object.assign(link, formValues)
       }
       return data
     })
@@ -36,11 +37,11 @@ export default function ({ item, editable, save }) {
     event.stopPropagation()
   }
 
-  return <div className={`bucketlist-item ${adding ? 'adding' : ''}`} onClick={handleClick}>
-    {adding ? <><FaPlus /><span>Add Item</span></> : <>
-      <div className='icon'>{done ? <FaCheckSquare /> : <FaRegSquare />}</div>
-      <div className='objective'>{item.objective}</div>
-      <div className='date-done'>{item.dateDone}</div>
+  return <div className={`bucketlist-link ${adding ? 'adding' : ''}`} onClick={handleClick}>
+    {adding ? <div className='add-link-button' style={{ height: '2rem', width: '2rem' }}><FaPlus /></div> : <>
+      <SocialIcon url={link.link} network={link.platform} style={{ height: '2rem', width: '2rem' }} /> 
+      <div className='objective'>{link.objective}</div>
+      <div className='date-done'>{link.dateDone}</div>
     </>}
     {editingModalOpen && <div className='modal open' onClick={closeEditing}>
       <div className='content' onClick={e => e.stopPropagation()}>
@@ -50,7 +51,6 @@ export default function ({ item, editable, save }) {
         </div>
         <div className='actions'>
           <button onClick={() => saveEdit()}><FaSave />save</button>
-          <button onClick={() => markAsDone()}><FaCheckSquare />mark as done</button>
         </div>
       </div>
     </div>}

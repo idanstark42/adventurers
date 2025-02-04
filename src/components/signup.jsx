@@ -11,7 +11,8 @@ const EMPTY_ADVENTURER = {
   skills: {},
   history: [],
   inventory: [],
-  bucketlist: []
+  bucketlist: [],
+  socialLinks: []
 }
 
 export default function Signup () {

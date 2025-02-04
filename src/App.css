@@ -119,3 +119,19 @@ textarea {
   position: relative;
   z-index: 102;
 }
+
+.share-button {
+  position: absolute;
+  top: 4rem;
+  right: 1rem;
+  background: #09122C;
+  color: #eee4ce;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+}
