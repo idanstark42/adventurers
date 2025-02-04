@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { useStytch, useStytchSession } from '@stytch/react'
 
+import Loader from '../components/loader'
+
 export default function Authenticate () {
   const stytch = useStytch()
   const { session } = useStytchSession()
@@ -16,5 +18,5 @@ export default function Authenticate () {
     }
   }, [stytch, session])
 
-  return <div>Loading</div>
+  return <Loader />
 }

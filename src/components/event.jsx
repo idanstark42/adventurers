@@ -5,18 +5,20 @@ import { FaSave } from 'react-icons/fa'
 
 import { getCountry } from '../logic/countries'
 
+const SKILLS = ['explorer', 'neophile', 'bondmaker', 'tactician']
+
 const DEFAULT_FORM_VALUES = {
-  // current country
   location: '',
   event: '',
-  date: new Date().toISOString().split('T')[0]
+  date: new Date().toISOString().split('T')[0],
+  skillPoints: SKILLS.map(skill => ({ skill, value: 0 }))
 }
 
 export default function Event ({ event, editable, save }) {
   const [editingModalOpen, setEditingModalOpen] = useState(false)
   const [viewingModalOpen, setViewingModalOpen] = useState(false)
   const adding = !event
-  const [formValues, setFormValues] = useState(adding ? DEFAULT_FORM_VALUES : { location: event.location, event: event.event, date: event.date })
+  const [formValues, setFormValues] = useState(adding ? DEFAULT_FORM_VALUES : { location: event.location, event: event.event, date: event.date, skillPoints: event.skillPoints || DEFAULT_FORM_VALUES.skillPoints })
 
   const startEditing = () => {
     if (!editable) {
@@ -76,6 +78,12 @@ export default function Event ({ event, editable, save }) {
           <label>Date</label>
           <span>{new Date(event.date).toLocaleDateString()}</span>
         </div>
+        <div className='field'>
+          <label>Skillpoints</label>
+          <ul>
+            {event.skillPoints.map((skill, i) => <li key={i}>{skill}</li>)}
+          </ul>
+        </div>
       </div>
     </div>}
     {editingModalOpen && <div className='modal open' onClick={closeEditing}>
@@ -92,6 +100,17 @@ export default function Event ({ event, editable, save }) {
           <label>Date</label>
           <input type='date' value={formValues.date} onChange={e => setFormValues({ ...formValues, date: e.target.value })} />
         </div>
+        {SKILLS
+          .map(skill => ({ skill, value: formValues.skillPoints.find(skillPoint => skillPoint.skill === skill)?.value || 0 }))
+          .map(({ skill, value }, i) => <div key={i} className='field'>
+            <label>{skill}</label>
+            <input type='number' value={value} onChange={e => {
+              const skillPoints = [...formValues.skillPoints]
+              skillPoints[i].value = Number(e.target.value)
+              setFormValues({ ...formValues, skillPoints })
+            }} />
+          </div>
+        )}
         <div className='actions'>
           <button onClick={() => saveEdit()}><FaSave />save</button>
         </div>

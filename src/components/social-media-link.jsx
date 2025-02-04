@@ -7,6 +7,8 @@ const DEFAULT_FORM_VALUES = {
   dateDone: null
 }
 
+const PLATFORMS = ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube', 'pinterest']
+
 export default function ({ link, editable, save }) {
   const [editingModalOpen, setEditingModalOpen] = useState(false)
   const adding = !link
@@ -46,8 +48,14 @@ export default function ({ link, editable, save }) {
     {editingModalOpen && <div className='modal open' onClick={closeEditing}>
       <div className='content' onClick={e => e.stopPropagation()}>
         <div className='field'>
-          <label>Objective</label>
-          <input type='text' value={formValues.objective} onChange={e => setFormValues({ ...formValues, objective: e.target.value })} />
+          <label>Network</label>
+          <div className='platforms' style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            {PLATFORMS.map(platform => <SocialIcon className={formValues.platform === platform ? 'selected' : ''} network={platform} style={{ height: '2rem', width: '2rem' }} onClick={() => setFormValues({ ...formValues, platform })} />)}
+          </div>
+        </div>
+        <div className='field'>
+          <label>Link</label>
+          <input type='text' value={formValues.link} onChange={e => setFormValues({ ...formValues, link: e.target.value })} />
         </div>
         <div className='actions'>
           <button onClick={() => saveEdit()}><FaSave />save</button>

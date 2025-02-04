@@ -26,10 +26,29 @@ const SKILL_LEVELS = {
 
 const findLevel = (xp, levels) => Math.max(0, levels.findLastIndex(level => xp >= level))
 
+const valueFromHistory = history => {
+  if (!history || history.length === 0) {
+    return 0
+  }
+
+  if (history[history.length - 1].value) {
+    return history[history.length - 1].value
+  }
+
+  const lastValueIndex = history.findLastIndex(event => event.hasOwnProperty('value'))
+
+  let value = lastValueIndex >= 0 ? history[lastValueIndex].value : 0
+
+  for (let i = lastValueIndex + 1; i < history.length; i++) {
+    value += history[i].add
+  }
+  return value
+}
+
 export default function Skill ({ name, history, editable, save }) {
   const [editingModalOpen, setEditingModalOpen] = useState(false)
 
-  const value = history.length > 0 ? history[history.length - 1].value : 0
+  const value = valueFromHistory(history)
   const level = findLevel(value, SKILL_LEVELS[name])
   const pointsInLevel = value - SKILL_LEVELS[name][level]
   const totalPoints = SKILL_LEVELS[name][level + 1] - SKILL_LEVELS[name][level]

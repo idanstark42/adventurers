@@ -30,7 +30,7 @@ export default function AdventurerScreen ({ editable=false, children }) {
     await update({}, newData)
   }
 
-  if (!data || loading) {
+  if (!data) {
     return <Loader />
   }
 
@@ -43,6 +43,15 @@ export default function AdventurerScreen ({ editable=false, children }) {
     }
   }
 
+  const skillHistory = (name, history) => {
+    const relevantEvents = data.history
+      .filter(event => event.skillPoints && event.skillPoints.length > 0 && event.skillPoints.some(skillPoint => skillPoint.skill === name))
+      .map(event => ({ ...event, add: event.skillPoints.filter(skillPoint => skillPoint.skill === name)[0].value }))
+    const allEvents = [...history, ...relevantEvents]
+    allEvents.sort((a, b) => a.timestamp - b.timestamp)
+    return allEvents
+  }
+
   return <div className={`adventurer-screen ${editable ? 'editable' : ''}`}>
     <div className={`tab-content bio ${tab === 'bio' ? 'active' : ''}`}>
       <EditableText className='name' name='name' editable={editable} save={save} value={data.name} />
@@ -50,13 +59,14 @@ export default function AdventurerScreen ({ editable=false, children }) {
       <ShareButton title={data.name} text={data.bio} url={window.location.href} />
       <div className='links'>
         {data.socialLinks.map(link => <SocialMediaLink key={link} link={link} editable={editable} save={save} />)}
+        {editable && <SocialMediaLink link={null} editable={editable} save={save} />}
       </div>
       <EditableText className='bio' name='bio' editable={editable} save={save} value={data.bio} multiline />
       <div className='stats'>
         {Object.entries(data.stats).sort(([name1], [name2]) => name1.localeCompare(name2)).map(([name, history]) => <Stat key={name} name={name} history={history} editable={editable} save={save} />)}
       </div>
       <div className='skills'>
-        {Object.entries(data.skills).map(([name, history]) => <Skill key={name} name={name} history={history} editable={editable} save={save} />)}
+        {Object.entries(data.skills).map(([name, history]) => <Skill key={name} name={name} history={skillHistory(name, history)} editable={editable} save={save} />)}
       </div>
     </div>
     <div className={`tab-content bucketlist ${tab === 'bucketlist' ? 'active' : ''}`}>
