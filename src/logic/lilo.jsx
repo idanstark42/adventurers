@@ -1,7 +1,10 @@
 import { useEffect, useState, createContext, useContext } from "react"
 import { useStytch } from '@stytch/react'
+import Loader from "../components/loader"
 
 const LiloContext = createContext()
+
+const LOADING_THROTTLE = 1000
 
 const DEFAULT_SETTINGS = {
   reload: false,
@@ -25,10 +28,7 @@ export function LiloProvider({ children, ...settings }) {
   }, [])
 
   const load = async (lilo) => {
-    await lilo.init().then(data => {
-      setData(data)
-      setLoading(false)
-    })
+    return await whileLoading(() => lilo.init().then(data => setData(data)))
   }
 
   const uploadImage = async (file) => {
@@ -43,13 +43,16 @@ export function LiloProvider({ children, ...settings }) {
   }
 
   const whileLoading = async (callback) => {
+    const start = Date.now()
     setLoading(true)
     await callback()
-    setLoading(false)
+    const loadingTime = Date.now() - start
+    console.log('Loading time:', loadingTime, 'waiting for', Math.max(0, LOADING_THROTTLE - loadingTime))
+    setTimeout(() => setLoading(false), Math.max(0, LOADING_THROTTLE - loadingTime))
   }
 
   if (!lilo) {
-    return <div>Loading...</div>
+    return <Loader />
   }
 
   const userId = stytch.user?.getInfo()?.user?.user_id

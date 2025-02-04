@@ -13,8 +13,10 @@ import Avatar from './avatar'
 import Event from './event'
 import Item from './item'
 import BucketlistItem from './bucketlist-item'
+import LogoutButton from './logout-button'
 
 import './adventurer-screen.css'
+import Loader from './loader';
 
 export default function AdventurerScreen ({ editable=false, children }) {
   const { data, update, loading, userId } = useLilo()
@@ -26,8 +28,8 @@ export default function AdventurerScreen ({ editable=false, children }) {
     await update({}, newData)
   }
 
-  if (!data && loading) {
-    return <div>Loading...</div>
+  if (!data || loading) {
+    return <Loader />
   }
 
   if (!data) {
@@ -71,6 +73,7 @@ export default function AdventurerScreen ({ editable=false, children }) {
       <div className={`tab ${tab === 'bucketlist' ? 'active' : ''}`} onClick={() => setTab('bucketlist')}><GiFullWoodBucket /></div>
       <div className={`tab ${tab === 'history' ? 'active' : ''}`} onClick={() => setTab('history')}><GiBookmarklet /></div>
       <div className={`tab ${tab === 'inventory' ? 'active' : ''}`} onClick={() => setTab('inventory')}><GiOpenTreasureChest /></div>
+      {userId && <div className='tab logout-button-container'><LogoutButton /></div>}
     </div>
     {children}
   </div>

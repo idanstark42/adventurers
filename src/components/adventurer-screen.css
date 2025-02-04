@@ -395,3 +395,12 @@
 .signup {
     overflow: auto;
 }
+
+.logout-button {
+    background: none;
+    box-shadow: none;
+    border: none;
+    outline: none;
+    padding: 0;
+    height: 100%;
+}
