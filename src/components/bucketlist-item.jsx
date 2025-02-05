@@ -36,11 +36,18 @@ export default function ({ item, editable, save }) {
     event.stopPropagation()
   }
 
+  const markAsDone = async () => {
+    await save(data => {
+      item.dateDone = new Date().toISOString()
+      return data
+    })
+    setEditingModalOpen(false)
+  }
+
   return <div className={`bucketlist-item ${adding ? 'adding' : ''}`} onClick={handleClick}>
     {adding ? <><FaPlus /><span>Add Item</span></> : <>
       <div className='icon'>{done ? <FaCheckSquare /> : <FaRegSquare />}</div>
       <div className='objective'>{item.objective}</div>
-      <div className='date-done'>{item.dateDone}</div>
     </>}
     {editingModalOpen && <div className='modal open' onClick={closeEditing}>
       <div className='content' onClick={e => e.stopPropagation()}>

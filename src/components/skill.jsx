@@ -27,6 +27,7 @@ const SKILL_LEVELS = {
 const findLevel = (xp, levels) => Math.max(0, levels.findLastIndex(level => xp >= level))
 
 const valueFromHistory = history => {
+  console.log(history)
   if (!history || history.length === 0) {
     return 0
   }
@@ -66,7 +67,7 @@ export default function Skill ({ name, history, editable, save }) {
       formValues.timestamp = Date.now()
       formValues.value = SKILL_LEVELS[name].reduce((total, level, index) => total + (index <= formValues.level ? level : 0), formValues.pointsInLevel)
       console.log(formValues)
-      history.push(formValues)
+      data.skills[name].push(formValues)
       return data
     })
     setEditingModalOpen(false)
