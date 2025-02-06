@@ -32,10 +32,11 @@
   height: 1rem;
   border-radius: 0.5rem;
   background: rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 .skills > .meter > .progress {
   height: 1rem;
-  border-radius: 0.5rem;
+  border-radius: 0.5rem 0 0 0.5rem;
   background: #235430;
 }

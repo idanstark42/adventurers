@@ -81,11 +81,11 @@ export default function Skill ({ name, history, editable, save }) {
   return <>
     <div className='icon' style={{ backgroundImage: `url(${SKILL_ICONS[name]})` }} onClick={startEditing} />
     <div className='name'>{name}</div>
+    <div className='level'>lvl. {level + 1}</div>
     <div className='meter'>
       <div className='progress' style={{ width: `${5 + pointsInLevel / totalPoints * 95}%`, backgroundColor: COLORS[name] }} />
     </div>
     <div className='points'>{pointsInLevel}/{totalPoints}</div>
-    <div className='level'>lvl. {level + 1}</div>
     {editingModalOpen && <div className='modal open' onClick={closeEditing}>
       <div className='content' onClick={e => e.stopPropagation()}>
         <div className='field'>

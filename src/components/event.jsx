@@ -81,7 +81,7 @@ export default function Event ({ event, editable, save }) {
         <div className='field'>
           <label>Skillpoints</label>
           <ul>
-            {event.skillPoints.map((skill, i) => <li key={i}>{skill}</li>)}
+            {(event.skillPoints || DEFAULT_FORM_VALUES.skillPoints).map(({ skill, value }, i) => <li key={i}>{skill}: {value}</li>)}
           </ul>
         </div>
       </div>
